@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Repair Trends - Live Sheet</title>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      google.charts.load('current', { packages: ['table'] });
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        const queryString = encodeURIComponent('SELECT A, B, C, D, E, F');
+        const query = new google.visualization.Query(
+          'https://docs.google.com/spreadsheets/d/1pll0vzJlZ9iaq74wWqxS1LkM8BykAb7Db8fNwOJD44Y/gviz/tq?sheet=Sheet1&tq=' + queryString
+        );
+        query.send(function (response) {
+          if (response.isError()) {
+            alert('Error: ' + response.getMessage() + '\n' + response.getDetailedMessage());
+            return;
+          }
+          const data = response.getDataTable();
+          const table = new google.visualization.Table(document.getElementById('table_div'));
+          table.draw(data, { showRowNumber: true, width: '100%', height: 'auto' });
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h2>📊 Live Repair Trends Data</h2>
+    <div id="table_div"></div>
+  </body>
+</html>
